@@ -4,11 +4,7 @@ Created on Sep 21, 2016
 @author: daniel
 '''
 
-import tensorflow as tf
+import numpy as np
 
-sess = tf.Session()
-print('a')
-t = tf.truncated_normal([1], 0, 1)
-for i in range(1000):
-   print(sess.run(t))
-print('b')
+print(np.random.choice([0.2,0.8]))
+print(np.arange(10))

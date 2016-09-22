@@ -19,10 +19,10 @@ def sampleWave():
     '''
     
     model = WaveNetModel()
-  
     wave = []
     for i in range(0, 1000):
         sampleValue =  model.sample()
+        print(sampleValue)
         wave.append(sampleValue)
         model.add(sampleValue)
     
