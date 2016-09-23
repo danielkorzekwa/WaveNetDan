@@ -4,26 +4,31 @@ Created on Sep 21, 2016
 @author: daniel
 '''
 
-from math import *
-import struct
-
-from WaveNetModel import WaveNetModel
+from WaveSampler import WaveSampler
 import numpy as np
+import time
 
 
-def sampleWave():
+def sampleWave(sampleNum):
     '''Sample wave form.
     
-    Returns np.array
-    
+    Args:
+        sampleNum (int): Number of samples to generate
+
+    Returns:
+        np.array: Generated waveform
+        
     '''
     
-    model = WaveNetModel()
+    waveSampler = WaveSampler()
     wave = []
-    for i in range(0, 1000):
-        sampleValue =  model.sample()
+    for i in range(0, sampleNum):
+        
+        now = time.time()
+        sampleValue =  waveSampler.sample()
+        print(time.time()-now)
+        
         print(sampleValue)
         wave.append(sampleValue)
-        model.add(sampleValue)
     
     return np.array(wave)

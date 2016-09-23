@@ -7,12 +7,13 @@ import unittest
 from sampleWave import sampleWave
 import librosa
 
+def aaa(): return 4
 
 class test_sampleWave(unittest.TestCase):
 
 
     def test(self):
-        wave = sampleWave()
+        wave = sampleWave(500)
         librosa.output.write_wav('/home/daniel/daniel/test.wav', wave, 1000)
 
 

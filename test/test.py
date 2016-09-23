@@ -5,6 +5,7 @@ Created on Sep 21, 2016
 '''
 
 import numpy as np
-
-print(np.random.choice([0.2,0.8]))
-print(np.arange(10))
+import tensorflow as tf
+import time
+from timeit import Timer
+import timeit
