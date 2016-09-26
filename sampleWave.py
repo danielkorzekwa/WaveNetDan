@@ -22,11 +22,11 @@ def sampleWave(sampleNum):
     
     waveSampler = WaveSampler()
     wave = []
-    for i in range(0, sampleNum):
+    for i in range(0, 1000):
         
         now = time.time()
-        sampleValue =  waveSampler.sample()
-        print(time.time()-now)
+        sampleValue =  waveSampler.sample(wave)
+        #print(time.time()-now)
         
         print(sampleValue)
         wave.append(sampleValue)

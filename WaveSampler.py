@@ -15,25 +15,39 @@ class WaveSampler:
         Constructor
         '''
         self.sess = tf.Session()
+      
+        self.waveInput = tf.placeholder(tf.int32)
         self.lastProbOp = self._createLastProbOp()
         
-    def sample(self):
+    def sample(self,waveInput):
         '''Generate waveform amplitude for the next sample.
         
-        @return float
-        '''
+        Args
+            waveInput(np.array(float))
         
-        lastProb = self.sess.run(self.lastProbOp)
-        predSample = np.random.choice(range(256), p=lastProb)
-        return self._decode(predSample)
+        Returns
+            float:
+        '''
+        if len(waveInput)== 0:
+            return self._decode(np.random.randint(256))
+        else:
+            lastProb = self.sess.run(self.lastProbOp,feed_dict={self.waveInput:waveInput})
+            print(lastProb)
+            predSample = np.random.choice(range(256), p=lastProb)
+            return self._decode(predSample)
     
     def _createLastProbOp(self): 
         '''
         '''
+
+        waveInputOneHotOp = tf.one_hot(self.waveInput, 256)
         
-        outputOp =  np.ones([10,256])
+        batchOneHotOp = tf.expand_dims(waveInputOneHotOp,0)
         
-        outputProbsOp = tf.nn.softmax(outputOp)
+        filterOp = tf.truncated_normal([1,256,256],stddev=0.1)
+        outputOp = tf.nn.conv1d(batchOneHotOp,filterOp,stride=1,padding='SAME')
+         
+        outputProbsOp = tf.nn.softmax(outputOp[0])
         
         lastProbOp = tf.slice(outputProbsOp, 
                 [tf.shape(outputProbsOp)[0]-1,0],[1,256])
