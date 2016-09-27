@@ -24,7 +24,7 @@ class WaveGraph:
     
         batchOneHotOp = tf.expand_dims(self.waveInputOneHotOp, 0)
         
-        self.filterOp = tf.Variable(tf.truncated_normal([1, 256, 256], stddev=0.1))
+        self.filterOp = tf.Variable(tf.truncated_normal([10, 256, 256], stddev=0.1))
         
         outputOp = tf.nn.conv1d(batchOneHotOp, self.filterOp, stride=1, padding='SAME')
          

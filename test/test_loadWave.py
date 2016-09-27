@@ -14,7 +14,7 @@ class test_loadWave(unittest.TestCase):
         waveform = loadWave('/home/daniel/daniel/sin.wav')
         
         plt.plot(range(len(waveform)),waveform)
-        #plt.show()
+        plt.show()
 
 
 if __name__ == "__main__":

@@ -7,12 +7,14 @@ Created on Sep 21, 2016
 import numpy as np
 import tensorflow as tf
 
-def sampleWave(sampleNum, waveGraph,sess):
+def sampleWave(waveform,sampleNum, waveGraph,sess):
     '''Sample wave form.
     
     Args:
-        waveGraph (WaveGraph)
-        sampleNum (int): Number of samples to generate
+        waveform(np.array(int)): Initial waveform
+        sampleNum(int): Number of samples to generate
+        waveGraph(WaveGraph):
+        sess(Session): 
 
     Returns:
         np.array: Generated waveform
@@ -22,7 +24,7 @@ def sampleWave(sampleNum, waveGraph,sess):
     lastProbOp = tf.slice(waveGraph.outputProbsOp, [tf.shape(waveGraph.outputProbsOp)[0] - 1, 0], [1, 256])
     lastProbReshapedOp = tf.reshape(lastProbOp,[-1])
     
-    wave = []
+    wave = waveform.tolist()
     
     for i in range(0, 1000):
         
@@ -31,9 +33,7 @@ def sampleWave(sampleNum, waveGraph,sess):
         else:
             lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:wave})
             predSample = decode(np.random.choice(range(256), p=lastProb))
-        
-            print(predSample)
-        
+                
             wave.append(predSample)
     
     return np.array(wave)
