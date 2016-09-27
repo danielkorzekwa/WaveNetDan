@@ -3,33 +3,25 @@ Created on Sep 26, 2016
 
 @author: daniel
 '''
-import tensorflow as tf
+from WaveGraph import WaveGraph
 import numpy as np
+import tensorflow as tf
 
-def trainWave(waveform):
+
+def trainWave(waveform,waveGraph,sess):
     ''' Trains wave model.
     
     Args:
-        np.array(int) Waveform array of amplitudes
+        waveform(np.array(int)): Waveform array of amplitudes
+        waveGraph(WaveGraph): Wave graph to train
     '''
-    
-    W = tf.Variable(tf.random_uniform([1], -1.0, 1.0))
-    b = tf.Variable(tf.zeros([1]))
-    
-    xData = np.arange(100).astype(np.float32)/100.0
-    
-    y = W * xData + b
-    
-    loss = tf.reduce_mean(tf.square(waveform.astype(np.float32)-y))
-    
-    train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
-    
-    sess = tf.Session()
-    sess.run(tf.initialize_all_variables())
-    
-    for i in range(200):
-        sess.run(train)
-        print(sess.run(loss))
-        #print(sess.run(W),sess.run(b))
         
-    raise Exception('Not implemented')     
+    entropyOp = tf.reduce_mean(tf.reduce_sum(-waveGraph.waveInputOneHotOp * tf.log(waveGraph.outputProbsOp), reduction_indices=[1]))
+        
+    trainOp = tf.train.GradientDescentOptimizer(0.5).minimize(entropyOp)
+        
+    for i in range(200):
+        entropy =  sess.run([trainOp,entropyOp],feed_dict={waveGraph.waveInput:waveform})[1]
+        print(entropy)
+        #print(sess.run(waveTrainGraph.W),sess.run(waveTrainGraph.b))
+      
