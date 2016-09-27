@@ -6,6 +6,7 @@ Created on Sep 21, 2016
 
 import numpy as np
 import tensorflow as tf
+import mu_law
 
 def sampleWave(waveform,sampleNum, waveGraph,sess):
     '''Sample wave form.
@@ -20,23 +21,28 @@ def sampleWave(waveform,sampleNum, waveGraph,sess):
         np.array: Generated waveform
         
     '''
-         
+             
     lastProbOp = tf.slice(waveGraph.outputProbsOp, [tf.shape(waveGraph.outputProbsOp)[0] - 1, 0], [1, 256])
     lastProbReshapedOp = tf.reshape(lastProbOp,[-1])
     
-    wave = waveform.tolist()
+    encodedWaveform = mu_law.encode(waveform,256)
+    sampleWave = encodedWaveform.tolist()
     
-    for i in range(0, 1000):
+    for i in range(0, sampleNum):
         
-        if len(wave) == 0:
-            wave.append(decode(np.random.randint(256)))
+        if len(sampleWave) == 0:
+            sampleWave.append(decode(np.random.randint(256)))
         else:
-            lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:wave})
-            predSample = decode(np.random.choice(range(256), p=lastProb))
-                
-            wave.append(predSample)
+            lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:sampleWave})
+           
+            predSample = np.random.choice(range(256), p=lastProb)
+            print(sampleWave[-1])
+            print(predSample)
+            print(lastProb[sampleWave[-1]],lastProb[predSample])
+            print('')
+            sampleWave.append(predSample)
     
-    return np.array(wave)
+    return mu_law.decode(np.array(sampleWave),256)
 
 def decode(encodedSample):
     mu = 255

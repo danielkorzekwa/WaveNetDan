@@ -20,7 +20,7 @@ def trainWave(waveform,waveGraph,sess):
         
     trainOp = tf.train.GradientDescentOptimizer(0.5).minimize(entropyOp)
         
-    for i in range(200):
+    for i in range(2000):
         entropy =  sess.run([trainOp,entropyOp],feed_dict={waveGraph.waveInput:waveform})[1]
         print(entropy)
         #print(sess.run(waveTrainGraph.W),sess.run(waveTrainGraph.b))

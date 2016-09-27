@@ -22,9 +22,7 @@ def loadWave(waveFile,samplingRate):
     Returns
         np.array[int] Waveform amplitudes array
     '''
-    print('a')
     s = librosa.load(waveFile,samplingRate)[0]
-    print('n')
     return(s)
     
     

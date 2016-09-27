@@ -13,20 +13,24 @@ from sampleWave import sampleWave
 from trainWave import trainWave
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import logging
+
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',level=logging.INFO)
 
 class test_sampleWave(unittest.TestCase):
 
 
     def test(self):
-     
+  
         waveform = loadWave('/home/daniel/daniel/sin.wav', samplingRate=1000)        
         waveGraph = WaveGraph()
 
         sess = tf.Session()
         sess.run(tf.initialize_all_variables())
         
-        notTrainedWave = sampleWave(waveform[0:500], 500, waveGraph, sess)
-        
+        notTrainedWave = waveform #sampleWave(waveform[0:500], 500, waveGraph, sess)
+  
+        logging.info('Training the model...') 
         trainWave(waveform, waveGraph, sess)
 
         trainedWave = sampleWave(waveform[0:500], 500, waveGraph, sess)
