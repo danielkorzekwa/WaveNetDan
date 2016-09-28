@@ -28,7 +28,7 @@ class test_sampleWave(unittest.TestCase):
         sess = tf.Session()
         sess.run(tf.initialize_all_variables())
         
-        notTrainedWave = waveform #sampleWave(waveform[0:500], 500, waveGraph, sess)
+        notTrainedWave = sampleWave(waveform[0:500], 500, waveGraph, sess)
   
         logging.info('Training the model...') 
         trainWave(waveform, waveGraph, sess)

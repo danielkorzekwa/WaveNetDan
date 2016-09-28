@@ -36,10 +36,7 @@ def sampleWave(waveform,sampleNum, waveGraph,sess):
             lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:sampleWave})
            
             predSample = np.random.choice(range(256), p=lastProb)
-            print(sampleWave[-1])
-            print(predSample)
-            print(lastProb[sampleWave[-1]],lastProb[predSample])
-            print('')
+            print('Last samples={}/{}, predicted={}/{}'.format(sampleWave[-1],lastProb[sampleWave[-1]],predSample,lastProb[predSample]))
             sampleWave.append(predSample)
     
     return mu_law.decode(np.array(sampleWave),256)
