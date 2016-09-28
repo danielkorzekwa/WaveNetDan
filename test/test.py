@@ -10,15 +10,10 @@ import time
 from timeit import Timer
 import timeit
 
-sess = tf.Session()
+import numpy as np
+import numpy.random
+import matplotlib.pyplot as plt
 
+a = None
 
-a = tf.constant([[1,2,3],[4,5,6]])
-b = a[1]
-c = tf.slice(a,[1,0],[1,3])
-
-print(b,c)
-print(sess.run(b))
-print(sess.run(c))
-
-
+print(a==None)

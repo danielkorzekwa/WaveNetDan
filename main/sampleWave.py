@@ -7,27 +7,31 @@ Created on Sep 21, 2016
 import numpy as np
 import tensorflow as tf
 import mu_law
+from WaveGraph import WaveGraph
 
-def sampleWave(waveform,sampleNum, waveGraph,sess):
+def sampleWave(waveform,sampleNum,filterOpParams=None):
     '''Sample wave form.
     
     Args:
         waveform(np.array(int)): Initial waveform
         sampleNum(int): Number of samples to generate
-        waveGraph(WaveGraph):
-        sess(Session): 
+        filterOpParams(ndarray[n,n]): Parameters of convolution layer
 
     Returns:
         np.array: Generated waveform
         
     '''
+    waveGraph = WaveGraph() if filterOpParams==None else WaveGraph(filterOpParams)
              
     lastProbOp = tf.slice(waveGraph.outputProbsOp, [tf.shape(waveGraph.outputProbsOp)[0] - 1, 0], [1, 256])
     lastProbReshapedOp = tf.reshape(lastProbOp,[-1])
     
     encodedWaveform = mu_law.encode(waveform,256)
     sampleWave = encodedWaveform.tolist()
-    
+
+    sess = tf.Session()
+    sess.run(tf.initialize_all_variables())
+
     for i in range(0, sampleNum):
         
         if len(sampleWave) == 0:
@@ -36,8 +40,10 @@ def sampleWave(waveform,sampleNum, waveGraph,sess):
             lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:sampleWave})
            
             predSample = np.random.choice(range(256), p=lastProb)
-            print('Last samples={}/{}, predicted={}/{}'.format(sampleWave[-1],lastProb[sampleWave[-1]],predSample,lastProb[predSample]))
+            print('{}:Last samples={}/{}, predicted={}/{}'.format(i,sampleWave[-1],lastProb[sampleWave[-1]],predSample,lastProb[predSample]))
             sampleWave.append(predSample)
+    
+    sess.close()
     
     return mu_law.decode(np.array(sampleWave),256)
 
