@@ -11,7 +11,7 @@ class WaveGraph:
     '''
     classdocs
     '''
-    def __init__(self, filterOpParams=tf.truncated_normal([1, 256, 256], stddev=0.1)):
+    def __init__(self, filterOpParams=tf.truncated_normal([3, 256, 256], stddev=0.1)):
         '''
         
         Args
