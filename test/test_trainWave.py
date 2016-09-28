@@ -18,7 +18,7 @@ class test_trainWave(unittest.TestCase):
     def test(self):
         waveform = loadWave('/home/daniel/daniel/sin_7000.wav',samplingRate=7000)        
                     
-        trainWave(waveform,maxIterNum=50)
+        trainWave(waveform,maxIterNum=200)
     
 
 

@@ -36,7 +36,7 @@ class test_sampleWave(unittest.TestCase):
         f.show()
   
         logging.info('Training the model...') 
-        filterOpParams = trainWave(waveform, maxIterNum=1000)
+        filterOpParams = trainWave(waveform, maxIterNum=400)
 
         trainedWave100 = sampleWave(waveform[0:500], 100,filterOpParams)
         g = plt.figure('trained')
