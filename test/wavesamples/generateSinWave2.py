@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 y = []
 for i in range(0, 7000):
-        value = 1*sin(i*(2*pi/30)) #+ random.randint(-4000, 4000)
+        value = 1*sin(i*(2*pi/30)) + np.random.normal(0,0.05) #+ random.randint(-4000, 4000)
         #packed_value = struct.pack('h', value)
         y.append(value)
     

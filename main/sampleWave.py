@@ -40,7 +40,7 @@ def sampleWave(waveform,sampleNum,filterOpParams=None):
             lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:sampleWave})
            
             predSample = np.random.choice(range(256), p=lastProb)
-            print('{}:Last samples={}/{}, predicted={}/{}'.format(i,sampleWave[-1],lastProb[sampleWave[-1]],predSample,lastProb[predSample]))
+            print('{}:,predicted={}/{}'.format(i,predSample,lastProb[predSample]))
             sampleWave.append(predSample)
     
     sess.close()

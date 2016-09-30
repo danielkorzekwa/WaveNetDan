@@ -23,28 +23,29 @@ class test_sampleWave(unittest.TestCase):
 
     def test(self):
   
-        waveform = loadWave('/home/daniel/daniel/sin_7000.wav', samplingRate=7000)        
+        waveform = loadWave('/home/daniel/daniel/o.wav', samplingRate=8000)        
         a = 450
         b = 750
-        realPlot = plt.figure('real')
-        plt.plot(range(a, b), waveform[a:b])
-        realPlot.show()
-          
-        notTrainedWave100 = sampleWave(waveform[0:500], 300)
-        f = plt.figure('not trained')
-        plt.plot(range(a, b), notTrainedWave100[a:b])
-        f.show()
+       
+     
+        
+       # notTrainedWave100 = sampleWave(waveform[0:500], 300)
+       # f = plt.figure('not trained')
+       # plt.plot(range(a, b), notTrainedWave100[a:b])
+       # f.show()
+       # input()
   
         logging.info('Training the model...') 
-        filterOpParams = trainWave(waveform[0:500], maxIterNum=2000)
-
+        filterOpParams = trainWave(waveform[0:500], maxIterNum=400)
+                
         trainedWave100 = sampleWave(waveform[0:500], 300,filterOpParams)
-        g = plt.figure('trained')
+        plt.close()
+        plt.plot(range(a, b), waveform[a:b])
         plt.plot(range(a, b), trainedWave100[a:b])
-        g.show()
+        plt.show()
 
-        trainedWaveAll = sampleWave(waveform[0:3500], 3500,filterOpParams )
-        librosa.output.write_wav('/home/daniel/daniel/test.wav', trainedWaveAll, 7000)
+        trainedWaveAll = sampleWave(waveform[0:4000], 4000,filterOpParams )
+        librosa.output.write_wav('/home/daniel/daniel/test.wav', trainedWaveAll, 8000)
 
       
 

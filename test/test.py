@@ -13,7 +13,9 @@ import timeit
 import numpy as np
 import numpy.random
 import matplotlib.pyplot as plt
+import wave
+import loadWave
+import librosa
 
-a = None
 
-print(a==None)
+waveform = librosa.load('/home/daniel/daniel/test.wav',7000)    

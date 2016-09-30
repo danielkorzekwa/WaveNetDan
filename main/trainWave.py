@@ -25,7 +25,7 @@ def trainWave(waveform,maxIterNum):
         
     entropyOp = tf.reduce_mean(tf.reduce_sum(-waveGraph.waveInputOneHotOp[1:101,] * tf.log(waveGraph.outputProbsOp[0:100,]), reduction_indices=[1]))
         
-    trainOp = tf.train.AdamOptimizer(0.1).minimize(entropyOp)
+    trainOp = tf.train.AdamOptimizer(0.01).minimize(entropyOp)
     
     sess = tf.Session()
     sess.run(tf.initialize_all_variables())

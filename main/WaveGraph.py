@@ -26,7 +26,8 @@ class WaveGraph:
         
         self.filterOp = tf.Variable(filterOpParams)
         
-        outputOp = tf.nn.conv1d(batchOneHotOp, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
-         
-        self.outputProbsOp = tf.nn.softmax(outputOp[0])  # [sample_num,256]
+        outputOp1 = tf.nn.conv1d(batchOneHotOp, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
+        outputOp2 = tf.nn.conv1d(outputOp1, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
+        outputOp3 = tf.nn.conv1d(outputOp1, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
+        self.outputProbsOp = tf.nn.softmax(outputOp3[0])  # [sample_num,256]
         
