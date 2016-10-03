@@ -9,11 +9,12 @@ import tensorflow as tf
 import mu_law
 from WaveGraph import WaveGraph
 
-def sampleWave(waveform,sampleNum,filterOpParams=None):
+def sampleWave(waveform,timeWindowSize,sampleNum,filterOpParams=None):
     '''Sample wave form.
     
     Args:
         waveform(np.array(int)): Initial waveform
+        timeWindowSize(int):
         sampleNum(int): Number of samples to generate
         filterOpParams(ndarray[n,n]): Parameters of convolution layer
 
@@ -37,7 +38,7 @@ def sampleWave(waveform,sampleNum,filterOpParams=None):
         if len(sampleWave) == 0:
             sampleWave.append(decode(np.random.randint(256)))
         else:
-            lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:sampleWave})
+            lastProb = sess.run(lastProbReshapedOp, feed_dict={waveGraph.waveInput:sampleWave[-timeWindowSize:]})
            
             predSample = np.random.choice(range(256), p=lastProb)
             print('{}:,predicted={}/{}'.format(i,predSample,lastProb[predSample]))
@@ -46,6 +47,7 @@ def sampleWave(waveform,sampleNum,filterOpParams=None):
     sess.close()
     
     return mu_law.decode(np.array(sampleWave),256)
+
 
 def decode(encodedSample):
     mu = 255
