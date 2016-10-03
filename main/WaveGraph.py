@@ -24,10 +24,26 @@ class WaveGraph:
     
         batchOneHotOp = tf.expand_dims(self.waveInputOneHotOp, 0)  # [1,sample_num,256]
         
-        self.filterOp = tf.Variable(filterOpParams)
+        self.filterParamsVar = tf.Variable(filterOpParams)
         
-        outputOp1 = tf.nn.conv1d(batchOneHotOp, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
-        outputOp2 = tf.nn.conv1d(outputOp1, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
-        outputOp3 = tf.nn.conv1d(outputOp1, self.filterOp, stride=1, padding='SAME')  # [1,sample_num,256]
-        self.outputProbsOp = tf.nn.softmax(outputOp3[0])  # [sample_num,256]
+        outputOp1 = self._casualConv(batchOneHotOp,self.filterParamsVar)  # [1,sample_num,256]
+        outputOp2 = self._casualConv(outputOp1,self.filterParamsVar)  # [1,sample_num,256]
+        self.outputProbsOp = tf.nn.softmax(outputOp2[0])  # [sample_num,256]
+     
+    def _casualConv(self,waveOneHot,filterParamsVar):
+        '''
+        Args
+            waveOneHot(tensor(1,sampleNum,256)):
+            filterParamsVar(Variable):
+            
+        Returns tensor(1,sampleNum,256)
+        '''
         
+        
+        padding = [[0, 0], [1, 0], [0, 0]]
+        waveOneHotPad = tf.pad(waveOneHot,padding)
+        
+        convPad = tf.nn.conv1d(waveOneHotPad, filterParamsVar, stride=1, padding='SAME')  # [1,sample_num,256]
+        casualConv =  tf.slice(convPad, [0, 0, 0], [-1, tf.shape(waveOneHot)[1], -1])
+        
+        return casualConv

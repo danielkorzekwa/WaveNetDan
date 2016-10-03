@@ -43,6 +43,6 @@ def trainWave(waveform,maxIterNum):
             
         #print(sess.run(waveTrainGraph.W),sess.run(waveTrainGraph.b))
     
-    filterOp = sess.run(waveGraph.filterOp,feed_dict={waveGraph.waveInput:encodedWaveform})
+    filterOp = sess.run(waveGraph.filterParamsVar,feed_dict={waveGraph.waveInput:encodedWaveform})
     sess.close()
     return filterOp

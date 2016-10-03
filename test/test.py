@@ -29,8 +29,6 @@ f = tf.ones([3, 1, 1])
 
 b = tf.nn.conv1d(a_pad,f,stride=1,padding='SAME')
 
-result = tf.slice(b,
-                          [0, 0, 0],
-                          [-1, tf.shape(a)[1], -1])
+result = tf.slice(b, [0, 0, 0], [-1, tf.shape(a)[1], -1])
 
 print(sess.run(result))
