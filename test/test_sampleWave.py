@@ -24,8 +24,7 @@ class test_sampleWave(unittest.TestCase):
     def test(self):
   
         waveform = loadWave('/home/daniel/daniel/o.wav', samplingRate=8000)        
-        a = 0
-        b = 500
+       
                
        # notTrainedWave100 = sampleWave(waveform[0:500], 300)
        # f = plt.figure('not trained')
@@ -34,12 +33,15 @@ class test_sampleWave(unittest.TestCase):
        # input()
   
         logging.info('Training the model...') 
-        filterOpParams = trainWave(waveform[0:1600], maxIterNum=200)
+        filterOpParams = trainWave(waveform[0:800], maxIterNum=200)
                 
-        trainedWave100 = sampleWave(waveform[0:250], 10,250,filterOpParams)
+        trainedWave100 = sampleWave(waveform[0:250], 10,500,filterOpParams)
         plt.close()
-        plt.plot(range(a, b), waveform[a:b],label='true')
-        plt.plot(range(a, b), trainedWave100[a:b],label='predicted')
+        
+        a = 0
+        b = 750
+        plt.plot(waveform[a:b],label='true')
+        plt.plot(trainedWave100[a:b],label='predicted')
         plt.legend()
         plt.show()
 
